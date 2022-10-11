@@ -10,7 +10,7 @@ Izvedena su 4 numerička eksperimenta, za koji je priložen kod:
 2. Linearni "Source-sink" eksperiment baziran na 2D linerarnim jedn. plitke vode 
 3. Nelinearni "Source-sink" eksperiment baziran na 2D nelinerarnim jedn. plitke vode
 4. Kanal s topografijom - jedn. za visinu u flux formi, dodana je gaussijan u 2D, zadan je uniformno
-   polje brzine u zonalnom smjeru i postepeno se pojacava u prvih 41 koraka
+   polje brzine u zonalnom smjeru i postepeno se pojačava u prvih 41 koraka
 
 Glavni programi u Fortranu:
 1. lin_adv_1D.f90
