@@ -17,8 +17,8 @@ Glavni programi u Fortranu
 3. ssc_nl.f90
 4.
 
-Skripte za kompajliranje koda:
-1. 
+Skripta za kompajliranje koda:
+1. compile_script
 
 
 Kod za vizualizaciju u Matlabu:
