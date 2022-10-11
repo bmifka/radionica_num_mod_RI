@@ -13,8 +13,8 @@ Izvedena su 4 numerička eksperimenta, za koji je priložen kod:
 Glavni programi u Fortranu
 
 1. lin_adv_1D.f90
-2.
-3.
+2. ssc.f90
+3. ssc_nl.f90
 4.
 
 Skripte za kompajliranje koda:
@@ -23,6 +23,5 @@ Skripte za kompajliranje koda:
 
 Kod za vizualizaciju u Matlabu:
 1. VIS_lon_adv_1D.m
-2.
-3.
+2. VIS_ssC_l_nl.m
 4.
