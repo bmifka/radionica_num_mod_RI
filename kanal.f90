@@ -1,10 +1,15 @@
 PROGRAM kanal
-!****************************************************************************************
-! numericka radionica Rijeka
-! source sink nelinearni
+!*******************************************************************************************************************
+! Eksperiment s kanalom i topografijom u sredini 
+! baziran na 2d nelinearnim jednadžbama plitke vode na Arakawa C mreži
+! shema je Euler unaprijed-unazad (unaprijed za visine, a unatrag za brzine)
 !
+!Program is made in the socpe of the Numerical Modeling Workshop held by prof. dr. sc. Vladimir Đurđević
+!Program je napravljen u sklopu Radionice numeričkog modeliranja pod vodstvom prof. dr. sc. Vladimira Đurđevića
+!----------------------------------------------------
+!Boris Mifka, Fakultet za fiziku, Sveučilište u Rijeci
 !
-!****************************************************************************************
+!*******************************************************************************************************************
 IMPLICIT NONE
 
 !Varijable
@@ -13,27 +18,24 @@ INTEGER, PARAMETER     :: IM=160, JM=84
 REAL, PARAMETER        :: d = 250000., dt=600., dh=2.*dt/600., HN=1000. ,g=9.81, f=0.0001, dtgd = dt*g/d
 INTEGER, PARAMETER     :: NMAX = 3*24*3600/dt
 INTEGER                :: I,J,N
-REAL, DIMENSION(IM,JM) :: U,V,H,UF,VF,HF, FU, FV, adv1, adv2, adv3,HB
+REAL, DIMENSION(IM,JM) :: U,V,H,UF,VF,HF,FU,FV,adv1,adv2,adv3,HB
 
-!Inicijalizacija
+!INICIJALIZACIJA
+		U  = 0.; V = 0.; H  = 0. 
+		UF = 0.; VF= 0.; HF = 0. 	 
 
-			U  = 0.; V = 0. ; 
-			UF = 0.; VF= 0. ; 	
+!ZADAVANJE TOPGRAFIJE - BRDO U SREDINI
 	DO I = 1,IM
 		DO J = 1,JM
-!BRDO U SREDINI
         HB(I,J) = 1000 - 50* EXP(-( (I*d-IM/2*d)**2/(8*d)**2 + (J*d-JM/2*d)**2/(8*d)**2) )
 		HB(I,J) = 1000 - 50* EXP(-( (I*d-IM/2*d)**2/(8*d)**2 + (J*d-JM/2*d)**2/(8*d)**2) )	
 		ENDDO
 	ENDDO
-	
-	H  = 0.
-	HF = 0.
 
-!Pocetni uvjeti (lijevo)
+!POČETNI UVJETI (uniformi meridionalni vjetar)
 	U = 0.05; UF = 0.05;
 	
-!Pocetni uvjeti (lijevo)
+!POČETNI UVIJETI ZA "SOURCE" U LIJEVOM DIJELU DOMENE
 	!DO I = 52,55
 		!DO J = 39,41
 		!	H (I,J)  = HN+dh;
@@ -41,7 +43,7 @@ REAL, DIMENSION(IM,JM) :: U,V,H,UF,VF,HF, FU, FV, adv1, adv2, adv3,HB
 		!ENDDO
 	!ENDDO
 	
-! desno
+!POČETNI UVIJETI ZA "SINK" U DESNOM DIJELU DOMENE
 	!DO I = 106,109
 		!DO J = 39,41
 			!H (I,J) = HN-dh;
@@ -49,9 +51,9 @@ REAL, DIMENSION(IM,JM) :: U,V,H,UF,VF,HF, FU, FV, adv1, adv2, adv3,HB
 		!ENDDO
 	!ENDDO	
 	
-!koracanje u vremenu - integracija modela
+!KORAČANJE U VREMENU - integracija modela
 	DO N = 1,NMAX
-!petlja za H
+!--prostorna petlja za H - jednadzbe u flux formi
 	DO I = 2,IM-1
 		DO J = 2,JM-1
 			HF(I,J) = H(I,J) - dt* ( ( H(I+1,J) + H(I,J) +  HB(I+1,J) + HB(I,J) ) *U(I,J) -  &
@@ -60,16 +62,14 @@ REAL, DIMENSION(IM,JM) :: U,V,H,UF,VF,HF, FU, FV, adv1, adv2, adv3,HB
 			( H(I,J) + H(I,J-1) + HB(I,J) + HB(I,J-1)) *V(I,J-1) )/(2*d)
 		ENDDO
 	ENDDO
-	
+!--bezgradijentni rubni uvjet za visinu
 	DO I=2,IM
 		HF(I,1)  = HF(I,2)
 		HF(I,JM) = HF(I,JM-1)
 	ENDDO
-	
-!petlja za brzine	
+!--prostorna petlja za brzine
 	DO I = 2,IM-1
 		DO J = 2,JM-1
-		
 			FU(i,j) = dt*f* ( U(I-1,J+1)+ U(I,J+1) + U(I-1,J) + U(I,J) )/4
 			FV(i,j) = dt*f* ( V(I,J)    + V(I+1,J) + V(I,J-1) + v(I+1,J-1) )/4
 			
@@ -83,7 +83,7 @@ REAL, DIMENSION(IM,JM) :: U,V,H,UF,VF,HF, FU, FV, adv1, adv2, adv3,HB
 			VF(I,J) = V(I,J) - dtgd* (HF(I,J+1) - HF(I,J))  -dt*adv2(i,j) - FU(I,J)
 		ENDDO
 	ENDDO
-
+!--bezgradijentni rubni uvjet za brzine
 	DO I=2,IM
 		UF(I,1) = UF(I,2)
 		VF(I,1) = VF(I,2)
@@ -91,9 +91,7 @@ REAL, DIMENSION(IM,JM) :: U,V,H,UF,VF,HF, FU, FV, adv1, adv2, adv3,HB
 		UF(I,JM) = UF(I,JM-1)
 		UF(I,JM) = UF(I,JM-1)
 	ENDDO
-
 !ciklicki r.u.
-
 	DO J = 1,JM
 		UF(2,J) = UF(IM-1,J)
 		UF(1,J) = UF(IM-2,J)
@@ -101,16 +99,15 @@ REAL, DIMENSION(IM,JM) :: U,V,H,UF,VF,HF, FU, FV, adv1, adv2, adv3,HB
 		VF(2,J) = VF(IM,J)
 		HF(1,J) = HF(IM-1,J) !da li ovo ide nakon h petlje?
 		HF(2,J) = HF(IM,J)
- ENDDO
-
+	ENDDO
+!--"update varijabli za sljedeći korak"
     U = UF; V = VF; H = HF
 	
 	!IF (mod(N,6)==0) 
 	CALL wrt
 	
-!update brzine
+!--"dodavanje" brzine u svakom koraku
 	IF (N<41) THEN
-!
 !	write(*,*) N
 !	write(*,*) MAXVAL(U)
 		DO I = 1,IM
@@ -119,22 +116,19 @@ REAL, DIMENSION(IM,JM) :: U,V,H,UF,VF,HF, FU, FV, adv1, adv2, adv3,HB
 			ENDDO
 		ENDDO	
 	ELSE
-	
 	END IF	
-	
-ENDDO	
+	ENDDO	
 	
 CONTAINS
 
 SUBROUTINE  wrt
-
+!--sub za ispis u .txt fileove
 	open(12, file='h.out')
 	open(13, file='u.out')
 	open(14, file='v.out')
-	 
-	 
+!ako zelite u Matlabu vizulaizirati topografiju, umjesto h stavite hb...
 	 DO j=1,jm
-	  	WRITE(12,*) (hb(i,j),i=1,im) ! implicitna petlja
+	  	WRITE(12,*) (h(i,j),i=1,im) 
 	  	WRITE(13,*) (u(i,j),i=1,im)
 	  	WRITE(14,*) (v(i,j),i=1,im)
 	 ENDDO
