@@ -25,4 +25,5 @@ Skripta za kompajliranje koda:
 Kod za vizualizaciju u Matlabu:
 1. VIS_lon_adv_1D.m
 2. VIS_ssc_l_nl.m
-4. 
+3.
+4. redblue.m za hladno-toplu skalu je preuzet s https://www.mathworks.com/matlabcentral/fileexchange/25536-red-blue-colormap
