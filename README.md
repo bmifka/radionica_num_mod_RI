@@ -11,7 +11,7 @@ Izvedena su 4 numerička eksperimenta, za koji je priložen kod:
 
 Glavni programi u Fortranu
 
-1. 
+1. lin_adv_1D.f90
 2.
 3.
 4.
