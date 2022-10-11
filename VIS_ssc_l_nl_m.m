@@ -1,6 +1,6 @@
 close all; clear all; clc
 %****************************************************************************************************************
-% "Source-Sink" model, vizualzicaija za linearni i nelinearni slučaj paralelno 
+% "Source-Sink" model, vizualizacija za linearni i nelinearni slučaj paralelno 
 % baziran na 2d nelinearnim jednadžbama plitke vode na Arakawa C mreži
 % shema je Euler unaprijed-unazad (unaprijed za visine, a unatrag za brzine)
 %
