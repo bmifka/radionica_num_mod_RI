@@ -1,9 +1,15 @@
 PROGRAM lin_adv_1D
-!*******************************************************************************************
+!****************************************************************************************************************
 !1d linearna advektivna jednadžba
+!--------------------------------
 !
 !
-!*******************************************************************************************
+!Program is made in the socpe of the Numerical Modeling Workshop held by prof. dr. sc. Vladimir Đurđević
+!Program je napravljen u sklopu Radionice numeričkog modeliranja pod vodstvom prof. dr. sc. Vladimira Đurđevića
+!----------------------------------------------------
+!Boris Mifka,Fakultet za fiziku, Sveučilište u Rijeci
+!
+!****************************************************************************************************************
 IMPLICIT NONE
 
 INTEGER, PARAMETER   :: IM=1001, NMAX=5000 
@@ -11,34 +17,35 @@ REAL, PARAMETER      :: c=10., dx=10000., dt=500.,cdtdx=c*dt/dx
 INTEGER              :: I,N
 REAL,DIMENSION(1001) :: U,UF
 
+!CFL
 WRITE(*,*) cdtdx
-!INICIJALIZACIJA
+!---INICIJALIZACIJA
 	DO I=1,IM
 		U (I) = 0.
 		UF(I) = 0.
 	ENDDO
 	
-!POCETNI UVJETI
+!---POCETNI UVJETI 
 
+!---box
 	!DO I=IM/2,IM/2+10
 		!U (I) = 1
 		!UF(I) = 1
 	!ENDDO
 
+!--gaussian
 	DO I = 1,IM
-		U(I) = 0.8*EXP(-(I*dx-IM/2*dx)**2)
+		U(I)  = 0.8*EXP(-(I*dx-IM/2*dx)**2)
 		UF(I) = 0.8*EXP(-(I*dx-IM/2*dx)**2)
-		
 	ENDDO
 
-!Koracanje u vremenu
+!---KORAČANJE U VREMENU
 	DO N=1,NMAX
 		DO I=2,IM 
 			UF(I) = U(I)-cdtdx*(U(I)-U(I-1))
 		ENDDO
 		
-		
-		
+!---ciklički r.u.		
 		UF(1) = UF(IM-1)
 		UF(2) = UF(IM)
 		
@@ -46,8 +53,8 @@ WRITE(*,*) cdtdx
 		U(I) = UF(I)
 		ENDDO
 		
-		
-		!IF (mod(N,5)==0)
+!---ISPIS u file		
+	!IF (mod(N,6)==0)
 		CALL wrt
 
 	ENDDO
@@ -55,18 +62,16 @@ WRITE(*,*) cdtdx
 
 CONTAINS
 
-	SUBROUTINE  wrt
-
+SUBROUTINE  wrt
+		
 	open(13, file='u.out')
 	 
-	 DO i=1,im
-	  	!WRITE(12,*) (h(i,j),i=1,im) ! implicitna petlja
-	  	WRITE(13,*) u(i)
-	  	!WRITE(14,*) (v(i,j),i=1,im)
-	 ENDDO
+	DO i=1,im
+	  WRITE(13,*) u(i)
+	ENDDO
 	 
 	WRITE(13,*) ''
 	
-	END SUBROUTINE wrt 
+END SUBROUTINE wrt 
 
 END PROGRAM lin_adv_1D
