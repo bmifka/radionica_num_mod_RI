@@ -53,8 +53,7 @@ WRITE(*,*) cdtdx
 		U(I) = UF(I)
 		ENDDO
 		
-!---ISPIS u file		
-	!IF (mod(N,6)==0)
+!---ISPIS u file svakog vrem. koraka
 		CALL wrt
 
 	ENDDO
