@@ -1,3 +1,6 @@
 !#bin/bash      
 
-gfortran -o run1 lin_adv_1D.f90
+gfortran -o ime_izvrsnog_fajla ime_programa.f90
+
+#npr.
+#gfortran -o run1 lin_adv_1D.f90
