@@ -12,7 +12,6 @@ PROGRAM kanal
 !*******************************************************************************************************************
 IMPLICIT NONE
 
-!Varijable
 
 INTEGER, PARAMETER     :: IM=160, JM=84
 REAL, PARAMETER        :: d = 250000., dt=600., dh=2.*dt/600., HN=1000. ,g=9.81, f=0.0001, dtgd = dt*g/d
@@ -21,8 +20,8 @@ INTEGER                :: I,J,N
 REAL, DIMENSION(IM,JM) :: U,V,H,UF,VF,HF,FU,FV,adv1,adv2,adv3,HB
 
 !INICIJALIZACIJA
-		U  = 0.; V = 0.; H  = 0. 
-		UF = 0.; VF= 0.; HF = 0. 	 
+		U  = 0.; V = 0.;  
+		UF = 0.; VF= 0.; 	 
 
 !ZADAVANJE TOPGRAFIJE - BRDO U SREDINI
 	DO I = 1,IM
@@ -32,6 +31,7 @@ REAL, DIMENSION(IM,JM) :: U,V,H,UF,VF,HF,FU,FV,adv1,adv2,adv3,HB
 		ENDDO
 	ENDDO
 
+H  = 0.; HF = 0. 
 !POČETNI UVJETI (uniformi meridionalni vjetar)
 	U = 0.05; UF = 0.05;
 	
