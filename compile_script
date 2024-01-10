@@ -1,4 +1,4 @@
-!#bin/bash      
+#!bin/bash      
 
 gfortran -o ime_izvrsnog_fajla ime_programa.f90
 
